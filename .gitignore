@@ -1,5 +1,5 @@
+.gitignore
 .classpath
 .project
 .git
-.DS_Store
-/bin
+bin
