@@ -50,4 +50,14 @@ public class State {
 		}
 		return output;
 	}
+	
+	public State copy() {
+		try {
+			return 0;
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		
+	}
 }
