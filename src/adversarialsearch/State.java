@@ -103,6 +103,10 @@ public class State {
 	}
 	
 	public Vector<String> legalMoves() {
-		return this.legalMoves(turn);
+		return this.legalMoves(this.turn);
+	}
+	
+	public boolean isLeaf() {
+		// return false;
 	}
 }
