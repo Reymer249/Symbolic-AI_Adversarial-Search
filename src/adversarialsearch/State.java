@@ -104,6 +104,6 @@ public class State {
 	}
 	
 	public boolean isLeaf() {
-		// return false;
+		return (this.legalMoves().size() == 0 || this.food == 0);
 	}
 }
