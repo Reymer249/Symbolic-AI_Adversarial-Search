@@ -3,6 +3,7 @@ package adversarialsearch;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
+import java.util.Vector;
 
 
 public class State {
@@ -12,8 +13,8 @@ public class State {
 	public int[] score; // the amount of food eaten by each agent
 	public int turn; // who’s turn it is, agent 0 or agent 1
 	public int food; // the total amount of food still available
-	public int nRows;
-	public int nCols;
+	public int nRows; // number of board rows
+	public int nCols; // number of board columns
 	
 	public State() {
 		this.score = new int[] {0, 0};
@@ -24,7 +25,8 @@ public class State {
 		State stateCopy = new State();
 		stateCopy.board = Arrays.stream(this.board).map(char[]::clone).toArray(char[][]::new);
 		stateCopy.agentX = Arrays.stream(this.agentX).toArray();
-		stateCopy.agentX = Arrays.stream(this.agentY).toArray();
+		stateCopy.agentY = Arrays.stream(this.agentY).toArray();
+		stateCopy.score = Arrays.stream(this.score).toArray();
 		stateCopy.turn = this.turn;
 		stateCopy.food = this.food;
 		stateCopy.nRows = this.nRows;
@@ -32,16 +34,11 @@ public class State {
 		return stateCopy;
 	}
 	
-	private int[] findOnBoard(char c) {
-		for (int i = 0; i < nRows; ++i)
-			for (int j = 0; j < nRows; ++j)
-				if (board[i][j] == c)
-					return new int[] {i, j};
-		return null;
-	}
-	
 	public void read(String file) {	
 		try {
+			this.agentX = new int[] {-1, -1}; // -1 is for not set
+			this.agentY = new int[] {-1, -1}; // -1 is for not set
+			
 			RandomAccessFile boardFile = new RandomAccessFile(file, "r");
 			String line = boardFile.readLine();
 			String[] dimensions = line.split(" ", 2);
@@ -51,7 +48,17 @@ public class State {
 			for (int i = 0; i < nRows; i++) {
 				line = boardFile.readLine();
 				for (int j = 0; j < nCols; j++) {
-					this.board[i][j] = line.charAt(j);
+					if (line.charAt(j) == 'A') {
+						this.agentX[0] = i;
+						this.agentY[0] = j;
+						this.board[i][j] = ' ';
+					} else if (line.charAt(j) == 'B') {
+						this.agentX[1] = i;
+						this.agentY[1] = j;
+						this.board[i][j] = ' ';
+					} else {
+						this.board[i][j] = line.charAt(j);
+					}
 				}
 			}
 			boardFile.close();
@@ -64,8 +71,6 @@ public class State {
 			for (int j = 0; j < nRows; ++j)
 				if (board[i][j] == '*')
 					++this.food;
-		this.agentX = this.findOnBoard('A');
-		this.agentY = this.findOnBoard('B');
 	}
 	
 	public String toString() {
@@ -75,5 +80,29 @@ public class State {
 			output += row + "\n";
 		}
 		return output;
+	}
+	
+	public Vector<String> legalMoves(int agent) {
+		Vector<String> ans = new Vector<String>();
+		
+		if (this.agentX[agent] >= 1 && this.board[this.agentX[agent] - 1][this.agentY[agent]] != '#')
+			ans.add("up");
+		if (this.agentY[agent] + 1 < this.nCols && this.board[this.agentX[agent]][this.agentY[agent] + 1] != '#')
+			ans.add("right");
+		if (this.agentX[agent] + 1 < this.nRows && this.board[this.agentX[agent] + 1][this.agentY[agent]] != '#')
+			ans.add("down");
+		if (this.agentY[agent] >= 1 && this.board[this.agentX[agent]][this.agentY[agent] - 1] != '#')
+			ans.add("left");
+		
+		if (this.board[this.agentX[agent]][this.agentY[agent]] == '*')
+			ans.add("eat");
+		if (this.board[this.agentX[agent]][this.agentY[agent]] == ' ')
+			ans.add("block");
+		
+		return ans;
+	}
+	
+	public Vector<String> legalMoves() {
+		return this.legalMoves(turn);
 	}
 }
