@@ -11,7 +11,7 @@ import java.util.Vector;
 
 
 public class State implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; // the variable used for the serialization
 	public char[][] board; // the board as a 2D character array
 	public int[] agentX; // the x−coordinates of the agents
 	public int[] agentY; // the y−coordinates of the agents
@@ -142,10 +142,7 @@ public class State implements Serializable {
 				break;
 		}
 		this.moves.addElement(action); // adding move to the list of moves done
-		if (this.turn == 0) // passing the turn
-			this.turn = 1;
-		else
-			this.turn = 0;
+		this.turn = 1 - this.turn; // passing the turn
 	}
 	
 	public boolean isLeaf() {
