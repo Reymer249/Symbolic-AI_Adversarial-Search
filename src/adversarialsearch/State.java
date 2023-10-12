@@ -2,11 +2,16 @@ package adversarialsearch;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Vector;
 
 
-public class State {
+public class State implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public char[][] board; // the board as a 2D character array
 	public int[] agentX; // the x−coordinates of the agents
 	public int[] agentY; // the y−coordinates of the agents
@@ -24,17 +29,22 @@ public class State {
 	}
 	
 	public State copy() {
-		State stateCopy = new State();
-		stateCopy.board = Arrays.stream(this.board).map(char[]::clone).toArray(char[][]::new);
-		stateCopy.agentX = Arrays.stream(this.agentX).toArray();
-		stateCopy.agentY = Arrays.stream(this.agentY).toArray();
-		stateCopy.score = Arrays.stream(this.score).toArray();
-		stateCopy.turn = this.turn;
-		stateCopy.food = this.food;
-		stateCopy.nRows = this.nRows;
-		stateCopy.nCols = this.nCols;
-		stateCopy.moves = new Vector<> (this.moves);
-		return stateCopy;
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+			oos.flush();
+				
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			State copy = (State)ois.readObject();
+			
+			return copy;
+		}
+		catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void read(String file) {	
