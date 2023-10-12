@@ -61,15 +61,13 @@ public class Game {
 	public void test() {
 //		System.out.println("\nGame.test not fully implemented yet\n");
 		
-		State out = minimax(b, b.turn, 11, 0);
+		State out = minimax(b, b.turn, 6, 0);
 		System.out.println(out);
-		System.out.print(out.agentX[0]);
-		System.out.print(" ");
-		System.out.print(out.agentY[0]);
-		System.out.print("\n");
-		System.out.print(out.agentX[1]);
-		System.out.print(" ");
-		System.out.print(out.agentY[1]);
+		System.out.println(out.agentX[0] + " " + out.agentY[0]);
+		System.out.println(out.agentX[1] + " " + out.agentY[1]);
+		System.out.println(out.moves);
+		System.out.println(out.score[0] + " " + out.score[1]);
+		
 		
 //		while (!b.isLeaf()){
 //			System.out.println(b.toString());
