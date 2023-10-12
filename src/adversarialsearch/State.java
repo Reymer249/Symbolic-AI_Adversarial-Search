@@ -15,13 +15,16 @@ public class State {
 	public int food; // the total amount of food still available
 	public int nRows; // number of board rows
 	public int nCols; // number of board columns
+	public Vector<String> moves; // list of executed actions
 	
 	public State() {
 		this.score = new int[] {0, 0};
 		this.turn = 0;
+		this.moves = new Vector<String>();
 	}
 	
 	public State copy() {
+		// TODO: copy moves as well
 		State stateCopy = new State();
 		stateCopy.board = Arrays.stream(this.board).map(char[]::clone).toArray(char[][]::new);
 		stateCopy.agentX = Arrays.stream(this.agentX).toArray();
@@ -101,6 +104,37 @@ public class State {
 	
 	public Vector<String> legalMoves() {
 		return this.legalMoves(this.turn);
+	}
+	
+	public void execute(String action) {
+		// executing action
+		switch (action) {
+			case "up":
+				this.agentX[this.turn]--;
+				break;
+			case "right":
+				this.agentY[this.turn]++;
+				break;
+			case "down":
+				this.agentX[this.turn]++;
+				break;
+			case "left":
+				this.agentY[this.turn]--;
+				break;
+			case "eat":
+				this.board[this.agentX[this.turn]][this.agentY[this.turn]] = ' ';
+				this.score[this.turn]++;
+				this.food--;
+				break;
+			case "block":
+				this.board[this.agentX[this.turn]][this.agentY[this.turn]] = '#';
+				break;
+		}
+		this.moves.addElement(action); // adding move to the list of moves done
+		if (this.turn == 0) // passing the turn
+			this.turn = 1;
+		else
+			this.turn = 0;
 	}
 	
 	public boolean isLeaf() {
