@@ -61,8 +61,9 @@ public class State {
 						this.agentY[1] = j;
 						this.board[i][j] = ' ';
 					} else {
-						if (board[i][j] == '*')
-							++this.food;
+						if (line.charAt(j) == '*') {
+							this.food++;
+						}
 						this.board[i][j] = line.charAt(j);
 					}
 				}
