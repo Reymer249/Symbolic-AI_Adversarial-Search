@@ -38,6 +38,7 @@ public class State {
 		try {
 			this.agentX = new int[] {-1, -1}; // -1 is for not set
 			this.agentY = new int[] {-1, -1}; // -1 is for not set
+			this.food = 0;
 			
 			RandomAccessFile boardFile = new RandomAccessFile(file, "r");
 			String line = boardFile.readLine();
@@ -57,6 +58,8 @@ public class State {
 						this.agentY[1] = j;
 						this.board[i][j] = ' ';
 					} else {
+						if (board[i][j] == '*')
+							++this.food;
 						this.board[i][j] = line.charAt(j);
 					}
 				}
@@ -65,12 +68,6 @@ public class State {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		this.food = 0;
-		for (int i = 0; i < nRows; ++i)
-			for (int j = 0; j < nRows; ++j)
-				if (board[i][j] == '*')
-					++this.food;
 	}
 	
 	public String toString() {
