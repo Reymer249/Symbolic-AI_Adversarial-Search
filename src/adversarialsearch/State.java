@@ -24,7 +24,8 @@ public class State {
 		State stateCopy = new State();
 		stateCopy.board = Arrays.stream(this.board).map(char[]::clone).toArray(char[][]::new);
 		stateCopy.agentX = Arrays.stream(this.agentX).toArray();
-		stateCopy.agentX = Arrays.stream(this.agentY).toArray();
+		stateCopy.agentY = Arrays.stream(this.agentY).toArray();
+		stateCopy.score = Arrays.stream(this.score).toArray();
 		stateCopy.turn = this.turn;
 		stateCopy.food = this.food;
 		stateCopy.nRows = this.nRows;
