@@ -24,7 +24,6 @@ public class State {
 	}
 	
 	public State copy() {
-		// TODO: copy moves as well
 		State stateCopy = new State();
 		stateCopy.board = Arrays.stream(this.board).map(char[]::clone).toArray(char[][]::new);
 		stateCopy.agentX = Arrays.stream(this.agentX).toArray();
@@ -34,6 +33,7 @@ public class State {
 		stateCopy.food = this.food;
 		stateCopy.nRows = this.nRows;
 		stateCopy.nCols = this.nCols;
+		stateCopy.moves = new Vector<> (this.moves);
 		return stateCopy;
 	}
 	
