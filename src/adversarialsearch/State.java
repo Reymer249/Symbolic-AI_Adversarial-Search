@@ -151,4 +151,15 @@ public class State implements Serializable {
 	public boolean isLeaf() {
 		return (this.legalMoves().size() == 0 || this.food == 0);
 	}
+	
+	public double value(int agent) {
+		if (this.legalMoves().size() == 0)
+			return -1;
+		if (this.food == 0)
+			if (this.score[agent] > this.score[1 - agent])
+				return 1;
+			else if (this.score[agent] < this.score[1 - agent])
+				return -1;
+		return 0;
+	}
 }
