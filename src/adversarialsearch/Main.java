@@ -8,6 +8,6 @@ public class Main {
 		System.out.println(state);
 		System.out.println("==========\n");
 		Game g = new Game();
-		g.play(7);
+		g.test(11);
 	}
 }

@@ -1,6 +1,7 @@
 package adversarialsearch;
 
 import java.util.Vector;
+import java.util.Collections;
 
 public class Game {
 	State b;
@@ -18,6 +19,7 @@ public class Game {
 		if (s.turn == forAgent) {
 			double maxEval = -2;
 			Vector<String> legalMoves =  s.legalMoves(s.turn);
+			Collections.shuffle(legalMoves);
 			int n_children = legalMoves.size(); // number of children nodes
 			State best_state = new State();
 			State child_state;
@@ -59,8 +61,10 @@ public class Game {
 	}
 	
 	public State minimax(State s, int forAgent, int maxDepth, int depth) {
-		State lastState = minimaxLastState(s, forAgent, maxDepth, depth);
+		State sCopy = s.copy();
+		sCopy.moves = new Vector<String>();
 		State nextState = s.copy();
+		State lastState = minimaxLastState(sCopy, forAgent, maxDepth, depth);
 		nextState.execute(lastState.moves.get(0));
 		return nextState;
 	}
@@ -73,6 +77,7 @@ public class Game {
 		if (s.turn == forAgent ) {
 			double maxEval = -2;
 			Vector<String> legalMoves =  s.legalMoves(s.turn);
+			Collections.shuffle(legalMoves);
 			int n_children = legalMoves.size();
 			State best_state = new State();
 			State child_state;
@@ -122,8 +127,10 @@ public class Game {
 	}
 	
 	public State alphabeta(State s, int forAgent, int maxDepth, int depth, double alpha, double beta) {
-		State lastState = alphabetaLastState(s, forAgent, maxDepth, depth, alpha, beta);
+		State sCopy = s.copy();
+		sCopy.moves = new Vector<String>();
 		State nextState = s.copy();
+		State lastState = alphabetaLastState(sCopy, forAgent, maxDepth, depth, alpha, beta);
 		nextState.execute(lastState.moves.get(0));
 		return nextState;
 	}
@@ -149,9 +156,7 @@ public class Game {
 		}
 	}
 	
-	public void test() {
-		int depth = 14;
-		
+	public void test(int depth) {
 		System.out.println("Alpha-beta (next move):\n");
 		State out1 = alphabeta(b, b.turn, depth, 0, -2, 2);
 		printMoves(b, out1);
@@ -178,10 +183,12 @@ public class Game {
 	
 	public void play(int depth) {
 		while (!b.isLeaf()) {
-			System.out.println("Alpha-beta (next move):\n");
 			State nextState = alphabeta(b, b.turn, depth, 0, -2, 2);
 			
+			System.out.println("Agent " + b.turn + " made move " + 
+							nextState.moves.get(nextState.moves.size() -1));
 			System.out.println(nextState);
+			System.out.println("Score: " + nextState.score[0] + " " + nextState.score[1]);
 			System.out.print("==========\n");
 			b = nextState;
 		}
