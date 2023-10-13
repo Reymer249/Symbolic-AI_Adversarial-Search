@@ -11,7 +11,8 @@ import java.util.Vector;
 
 
 public class State implements Serializable {
-	private static final long serialVersionUID = 1L; // the variable used for the serialization
+	private static final long serialVersionUID = 1L; // the variable used for the serialization 
+	// (when copy state)
 	public char[][] board; // the board as a 2D character array
 	public int[] agentX; // the x−coordinates of the agents
 	public int[] agentY; // the y−coordinates of the agents
@@ -150,7 +151,9 @@ public class State implements Serializable {
 	}
 	
 	public double value(int agent) {
-		if (this.legalMoves().size() == 0)
+		if (this.legalMoves(1-agent).size() == 0)
+			return 1;
+		if (this.legalMoves(agent).size() == 0)
 			return -1;
 		if (this.food == 0)
 			if (this.score[agent] > this.score[1 - agent])

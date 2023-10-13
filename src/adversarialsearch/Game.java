@@ -15,10 +15,10 @@ public class Game {
 			return s;
 		}
 		
-		if (s.turn == forAgent ) {
+		if (s.turn == forAgent) {
 			double maxEval = -2;
 			Vector<String> legalMoves =  s.legalMoves(s.turn);
-			int n_children = legalMoves.size();
+			int n_children = legalMoves.size(); // number of children nodes
 			State best_state = new State();
 			State child_state;
 			String action;
@@ -33,12 +33,14 @@ public class Game {
 					best_state = child_state;
 				}
 			}
+//			System.out.println(s.turn);
+//			System.out.println(best_state);
 			return best_state;
 		}
 		else {
 			double minEval = 2;
-			Vector<String> legalMoves =  s.legalMoves(s.turn);
-			int n_children = legalMoves.size();
+			Vector<String> legalMoves =  s.legalMoves(s.turn); 
+			int n_children = legalMoves.size(); // number of children nodes
 			State worst_state = new State(); // We name the variable "worst case" as we look 
 			//from the perspective of <forAgent> agent
 			State child_state;
@@ -54,6 +56,8 @@ public class Game {
 					worst_state = child_state;
 				}
 			}
+//			System.out.println(s.turn);
+//			System.out.println(worst_state);
 			return worst_state;
 		}
 	}
@@ -61,12 +65,13 @@ public class Game {
 	public void test() {
 //		System.out.println("\nGame.test not fully implemented yet\n");
 		
-		State out = minimax(b, b.turn, 6, 0);
+		State out = minimax(b, b.turn, 8, 0);
 		System.out.println(out);
-		System.out.println(out.agentX[0] + " " + out.agentY[0]);
-		System.out.println(out.agentX[1] + " " + out.agentY[1]);
 		System.out.println(out.moves);
-		System.out.println(out.score[0] + " " + out.score[1]);
+//		System.out.println(out.agentX[0] + " " + out.agentY[0]);
+//		System.out.println(out.agentX[1] + " " + out.agentY[1]);
+//		System.out.println(out.moves);
+//		System.out.println(out.score[0] + " " + out.score[1]);
 		
 		
 //		while (!b.isLeaf()){
