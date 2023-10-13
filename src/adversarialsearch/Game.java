@@ -33,8 +33,6 @@ public class Game {
 					best_state = child_state;
 				}
 			}
-//			System.out.println(s.turn);
-//			System.out.println(best_state);
 			return best_state;
 		}
 		else {
@@ -56,18 +54,12 @@ public class Game {
 					worst_state = child_state;
 				}
 			}
-//			System.out.println(s.turn);
-//			System.out.println(worst_state);
 			return worst_state;
 		}
 	}
 	
 	public State alphabeta(State s, int forAgent, int maxDepth, int depth, double alpha, double beta) {
 		if (depth == maxDepth || s.isLeaf()) {
-			if (s.food == 0 && s.score[0] == 2 && s.score[1] == 0)
-				System.out.println("0win" + s.value(forAgent));
-			else if (s.food == 0 && s.score[1] == 2 && s.score[0] == 0)
-				System.out.println("1win" + s.value(forAgent));
 			return s;
 		}
 		
@@ -123,36 +115,31 @@ public class Game {
 	}
 	
 	public void test() {
-//		System.out.println("\nGame.test not fully implemented yet\n");
+		int depth = 15;
 		
-<<<<<<< HEAD
-		State out = minimax(b, b.turn, 8, 0);
-		System.out.println(out);
-		System.out.println(out.moves);
-//		System.out.println(out.agentX[0] + " " + out.agentY[0]);
-//		System.out.println(out.agentX[1] + " " + out.agentY[1]);
-//		System.out.println(out.moves);
-//		System.out.println(out.score[0] + " " + out.score[1]);
-=======
-		State out1 = alphabeta(b, b.turn, 15, 0, -2, 2);
+		System.out.println("Alpha-beta");
+		State out1 = alphabeta(b, b.turn, depth, 0, -2, 2);
 		System.out.println(out1);
-		System.out.println(out1.value(0));
-		System.out.println(out1.agentX[0] + " " + out1.agentY[0]);
-		System.out.println(out1.agentX[1] + " " + out1.agentY[1]);
-		System.out.println(out1.moves);
-		System.out.println(out1.score[0] + " " + out1.score[1]);
-		System.out.println(out1.food);
->>>>>>> d72126b59adc8089c83d1be98c1856ffdcf4b99a
+		System.out.println("Score: " + out1.value(0));
+		System.out.println("Agent A: " + out1.agentX[0] + " " + out1.agentY[0]);
+		System.out.println("Agent B: " + out1.agentX[1] + " " + out1.agentY[1]);
+		System.out.println("Game log:" + out1.moves);
+		System.out.println("Scores: "+ out1.score[0] + " " + out1.score[1]);
+		System.out.println("Food: " + out1.food);
 		
-//		System.out.print("---------\n");
-//		
-//		State out2 = minimax(b, b.turn, 10, 0);
-//		System.out.println(out2);
-//		System.out.println(out2.agentX[0] + " " + out2.agentY[0]);
-//		System.out.println(out2.agentX[1] + " " + out2.agentY[1]);
-//		System.out.println(out2.moves);
-//		System.out.println(out2.score[0] + " " + out2.score[1]);
+		System.out.print("---------\n");
 		
+		System.out.println("Minimax");
+		State out2 = minimax(b, b.turn, depth, 0);
+		System.out.println(out2);
+		System.out.println("Score: " + out2.value(0));
+		System.out.println("Agent A: " + out2.agentX[0] + " " + out2.agentY[0]);
+		System.out.println("Agent B: " + out2.agentX[1] + " " + out2.agentY[1]);
+		System.out.println("Game log:" + out2.moves);
+		System.out.println("Scores: "+ out2.score[0] + " " + out2.score[1]);
+		System.out.println("Food: " + out2.food);
+		
+		/* Random moves game */
 //		while (!b.isLeaf()){
 //			System.out.println(b.toString());
 //			System.out.println("Legal moves for agent " + b.turn + ": "+ b.legalMoves() + "\n");
