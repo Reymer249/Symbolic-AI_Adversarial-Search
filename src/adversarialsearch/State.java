@@ -86,9 +86,28 @@ public class State implements Serializable {
 	}
 	
 	public String toString() {
+		String[][] tmpBoard = new String[this.nRows][this.nCols];
+		for (int i = 0; i < this.nRows; i++) {
+	        for (int j = 0; j < this.nCols; j++) {
+	        	tmpBoard[i][j] = String.valueOf(this.board[i][j]);
+	        	// to get normal output: comment the 2 if's below
+	        	if (i == this.agentX[0] && j == this.agentY[0])
+	        		if (tmpBoard[i][j].equals(" "))
+	        			tmpBoard[i][j] = "A";
+	        		else
+	        			tmpBoard[i][j] = "(" + tmpBoard[i][j].replace("(","").replace(")","") + "A)";
+	        	if (i == this.agentX[1] && j == this.agentY[1]) {
+	        		if (tmpBoard[i][j].equals(" "))
+	        			tmpBoard[i][j] = "B";
+	        		else
+	        			tmpBoard[i][j] = "(" + tmpBoard[i][j].replace("(","").replace(")","") + "B)";
+	        	}
+	        }
+	    }
+		
 		String output = "";
-		for (int i = 0; i < nRows; i++) {
-			String row = new String(this.board[i]);
+		for (int k = 0; k < nRows; k++) {
+			String row = String.join("", tmpBoard[k]);
 			output += row + "\n";
 		}
 		return output;

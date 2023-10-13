@@ -114,30 +114,39 @@ public class Game {
 		}
 	}
 	
+	private void printBoard(State board, boolean mode) {
+		System.out.print(board);
+		System.out.println("Score: " + board.value(0));
+		if (mode == true) {
+			System.out.println("Agent A: " + board.agentX[0] + " " + board.agentY[0]);
+			System.out.println("Agent B: " + board.agentX[1] + " " + board.agentY[1]);
+			System.out.println("Game log:" + board.moves);
+			System.out.println("Scores: "+ board.score[0] + " " + board.score[1]);
+			System.out.println("Food: " + board.food);
+		}
+		System.out.println();
+	}
+	
+	private void printMoves(State startBoard, State finalBoard) {
+		State tmpBoard = startBoard.copy();
+		for (int i = 0; i < finalBoard.moves.size(); ++i) {
+			tmpBoard.execute(finalBoard.moves.get(i));
+			printBoard(tmpBoard, false);
+		}
+	}
+	
 	public void test() {
-		int depth = 15;
+		int depth = 14;
 		
 		System.out.println("Alpha-beta");
 		State out1 = alphabeta(b, b.turn, depth, 0, -2, 2);
-		System.out.println(out1);
-		System.out.println("Score: " + out1.value(0));
-		System.out.println("Agent A: " + out1.agentX[0] + " " + out1.agentY[0]);
-		System.out.println("Agent B: " + out1.agentX[1] + " " + out1.agentY[1]);
-		System.out.println("Game log:" + out1.moves);
-		System.out.println("Scores: "+ out1.score[0] + " " + out1.score[1]);
-		System.out.println("Food: " + out1.food);
+		printMoves(b, out1);
 		
-		System.out.print("---------\n");
+		System.out.print("==========\n");
 		
-		System.out.println("Minimax");
-		State out2 = minimax(b, b.turn, depth, 0);
-		System.out.println(out2);
-		System.out.println("Score: " + out2.value(0));
-		System.out.println("Agent A: " + out2.agentX[0] + " " + out2.agentY[0]);
-		System.out.println("Agent B: " + out2.agentX[1] + " " + out2.agentY[1]);
-		System.out.println("Game log:" + out2.moves);
-		System.out.println("Scores: "+ out2.score[0] + " " + out2.score[1]);
-		System.out.println("Food: " + out2.food);
+//		System.out.println("Minimax");
+//		State out2 = minimax(b, b.turn, depth, 0);
+//		printMoves(b, out2);
 		
 		/* Random moves game */
 //		while (!b.isLeaf()){
