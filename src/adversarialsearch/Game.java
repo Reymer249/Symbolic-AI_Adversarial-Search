@@ -10,7 +10,7 @@ public class Game {
 		b.read("data/board.txt");
 	}
 	
-	public State minimax(State s, int forAgent, int maxDepth, int depth) {
+	public State minimaxLastState(State s, int forAgent, int maxDepth, int depth) {
 		if (depth == maxDepth || s.isLeaf()) {
 			return s;
 		}
@@ -26,7 +26,7 @@ public class Game {
 				action = legalMoves.get(i);
 				child_state = s.copy();
 				child_state.execute(action);
-				child_state = minimax(child_state, forAgent, maxDepth, depth+1);
+				child_state = minimaxLastState(child_state, forAgent, maxDepth, depth+1);
 				double value = child_state.value(forAgent);
 				if (value > maxEval) {
 					maxEval = value;
@@ -47,7 +47,7 @@ public class Game {
 				action = legalMoves.get(i);
 				child_state = s.copy();
 				child_state.execute(action);
-				child_state = minimax(child_state, forAgent, maxDepth, depth+1);
+				child_state = minimaxLastState(child_state, forAgent, maxDepth, depth+1);
 				double value = child_state.value(forAgent);
 				if (value < minEval) {
 					minEval = value;
@@ -58,7 +58,14 @@ public class Game {
 		}
 	}
 	
-	public State alphabeta(State s, int forAgent, int maxDepth, int depth, double alpha, double beta) {
+	public State minimax(State s, int forAgent, int maxDepth, int depth) {
+		State lastState = minimaxLastState(s, forAgent, maxDepth, depth);
+		State nextState = s.copy();
+		nextState.execute(lastState.moves.get(0));
+		return nextState;
+	}
+	
+	public State alphabetaLastState(State s, int forAgent, int maxDepth, int depth, double alpha, double beta) {
 		if (depth == maxDepth || s.isLeaf()) {
 			return s;
 		}
@@ -74,7 +81,7 @@ public class Game {
 				action = legalMoves.get(i);
 				child_state = s.copy();
 				child_state.execute(action);
-				child_state = alphabeta(child_state, forAgent, maxDepth, depth+1, alpha, beta);
+				child_state = alphabetaLastState(child_state, forAgent, maxDepth, depth+1, alpha, beta);
 				double value = child_state.value(forAgent);
 				if (value > maxEval) {
 					maxEval = value;
@@ -99,7 +106,7 @@ public class Game {
 				action = legalMoves.get(i);
 				child_state = s.copy();
 				child_state.execute(action);
-				child_state = alphabeta(child_state, forAgent, maxDepth, depth+1, alpha, beta);
+				child_state = alphabetaLastState(child_state, forAgent, maxDepth, depth+1, alpha, beta);
 				double value = child_state.value(forAgent);
 				if (value < minEval) {
 					minEval = value;
@@ -114,8 +121,15 @@ public class Game {
 		}
 	}
 	
+	public State alphabeta(State s, int forAgent, int maxDepth, int depth, double alpha, double beta) {
+		State lastState = alphabetaLastState(s, forAgent, maxDepth, depth, alpha, beta);
+		State nextState = s.copy();
+		nextState.execute(lastState.moves.get(0));
+		return nextState;
+	}
+	
 	private void printBoard(State board, boolean mode) {
-		System.out.print(board);
+		System.out.println(board);
 		System.out.println("Score: " + board.value(0));
 		if (mode == true) {
 			System.out.println("Agent A: " + board.agentX[0] + " " + board.agentY[0]);
@@ -138,7 +152,7 @@ public class Game {
 	public void test() {
 		int depth = 14;
 		
-		System.out.println("Alpha-beta");
+		System.out.println("Alpha-beta (next move):\n");
 		State out1 = alphabeta(b, b.turn, depth, 0, -2, 2);
 		printMoves(b, out1);
 		
@@ -162,4 +176,14 @@ public class Game {
 		
 	}
 	
+	public void play(int depth) {
+		while (!b.isLeaf()) {
+			System.out.println("Alpha-beta (next move):\n");
+			State nextState = alphabeta(b, b.turn, depth, 0, -2, 2);
+			
+			System.out.println(nextState);
+			System.out.print("==========\n");
+			b = nextState;
+		}
+	}
 }
