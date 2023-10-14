@@ -30,6 +30,9 @@ public class State implements Serializable {
 	}
 	
 	public State copy() {
+		/** This method deals with the copying of the object. We decided to user serialization
+		 * due to it's compactness and scalability. For that the class State was defined as a 
+		 * serializable class.*/
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -49,6 +52,8 @@ public class State implements Serializable {
 	}
 	
 	public void read(String file) {	
+		/** Method to read the board from the file with the <file>
+		 * location and also write down all needed parameters (e.g. food). */
 		try {
 			this.agentX = new int[] {-1, -1}; // -1 is for not set
 			this.agentY = new int[] {-1, -1}; // -1 is for not set
