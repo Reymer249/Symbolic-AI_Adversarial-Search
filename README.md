@@ -39,11 +39,13 @@ We implement **Minimax** and **Alpha-Beta pruning** algorithms to play a two-pla
 ## 📂 Repository Contents
 - `Report.pdf` – Full report for the assignment
 - `Assignment.pdf` - An assignment statement specifying the tasks to complete
-- `Main.java` – Entry point for running the game
 - `src/adversarialsearch/`
   - `Game.java` – Implementation of Minimax and Alpha-Beta pruning  
-  - `State.java` – Board representation and game logic, including move execution and evaluation  
-  - `data/board.txt` – Example game board  
+  - `State.java` – Board representation and game logic, including move execution and evaluation
+  - `Main.java` – Entry point for running the game
+- `data/`
+  - `board.txt` - Example of the game board
+- `README.md` - README file (this file)
 
 ---
 
